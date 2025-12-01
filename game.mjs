@@ -96,7 +96,7 @@ async function init(levelIndex = 0) {
 }
 
 function loop() {
-    updatePlayState();
+    update();
     draw();
     requestAnimationFrame(loop);
 }
@@ -242,6 +242,10 @@ function update() {
         if (KEYS.Enter || KEYS.Escape) {
             gameState = GAME_STATES.menu;
         }
+        return;
+    }
+
+    if (gameState === GAME_STATES.idle) {
         return;
     }
 
