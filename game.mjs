@@ -27,6 +27,10 @@ canvas.setAttribute("height", DIMENSIONS.totalHeight);
 
 const PLAYER_SYMBOLE = "H"
 
+const LEVEL_FILES = [ // Easier to added more level later
+    "./levels/level1.lvl"
+]
+
 let level = null;
 let background = null;
 let player = null;
@@ -49,10 +53,16 @@ const MENU_ITEMS = [
 
 //#region GAME ENGINE
 
-async function init() {
+async function init(levelIndex = 0) {
 
-    level = await getGameLevelDataFrom("./levels/level1.lvl");
+    currentLevelIndex = levelIndex
+
+    level = await getGameLevelDataFrom(LEVEL_FILES[currentLevelIndex]);
     background = renderStructure(level.structure);  // This is a solution to save us drawing later, It draws the full map to the background variable.
+
+    components = []
+    player = null;
+    isGameOver = false;
 
     // The following loop creates all the game components.
     // It is messy and could be simpler 
@@ -78,7 +88,10 @@ async function init() {
         }
     }
 
-    loop();
+    if (!hasGameStarted) {
+        hasGameStarted = true;
+        loop();
+    }
 
 }
 
