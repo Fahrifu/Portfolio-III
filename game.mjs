@@ -357,6 +357,34 @@ function drawMenuScreen() {
     ctx.restore();
 }
 
+function drawInstructionScreen() {
+    ctx.clearRect(0, 0, canvas.clientWidth, canvas.clientHeight);
+    ctx.save();
+
+    ctx.fillStyle = "black";
+    ctx.fillRect(0, 0, canvas.clientWidth, canvas.clientHeight);
+
+    ctx.fillStyle = "white";
+    ctx.font = "24px 'Tiny5'";
+    let y = DIMENSIONS.padding * 2;
+
+    const lines = [
+        "Arrow keys - move",
+        "Walk into Zombies to fight",
+        "Pick up keys (K) nad Potion (P)",
+        "Open doors (D) when you have a key",
+        "",
+        "Press ENTER to return to the menu"
+    ];
+
+    for (let i = 0; i < lines.length; i++) {
+        ctx.fillText(lines[i], DIMENSIONS.padding * 2, y);
+        y += DIMENSIONS.tileDimension * 2;
+    }
+
+    ctx.restore();
+}
+
 function draw() {
 
     if (gameState === GAME_STATES.init) {
@@ -367,6 +395,10 @@ function draw() {
     if (gameState === GAME_STATES.menu) {
         drawMenuScreen();
         return;
+    }
+
+    if (gameState === GAME_STATES.pause) {
+        drawInstructionScreen();
     }
 
     drawPlayState();
