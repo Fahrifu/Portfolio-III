@@ -31,6 +31,8 @@ const LEVEL_FILES = [ // Easier to added more level later
     "./levels/level1.lvl"
 ]
 
+let currentLevelIndex = 0;
+
 let level = null;
 let background = null;
 let player = null;
@@ -255,7 +257,7 @@ function update() {
     }
 }
 
-function draw() {
+function drawPlayState() {
     ctx.clearRect(0, 0, canvas.clientWidth, canvas.clientHeight);
 
     ctx.save();
@@ -299,6 +301,31 @@ function draw() {
     if (debug) {
         displayDebugInfo(ctx)
     }
+
+    ctx.restore();
+}
+
+function drawSplashScreen() {
+    ctx.clearRect(0, 0, canvas.clientWidth, canvas.clientHeight);
+    ctx.save();
+
+    ctx.fillStyle = "black";
+    ctx.fillRect(0, 0, canvas.clientWidth, canvas.clientHeight);
+    
+    ctx.fillStyle = "white";
+    ctx.font = "48px 'Jacquard 12'";
+    let title = "Quest";
+    let bounds = Tools.getTextBounds(ctx, title);
+    let x = (_width * 0.5) - (bounds.width * 0.5);
+    let y = (_height * 0.5) - (bounds.height * 0.5);
+    ctx.fillText(title, x, y);
+
+    ctx.font = "18px 'Tiny5'";
+    const subtitle = "Press any key to continue";
+    bounds = Tools.getTextBounds(ctx, subtitle);
+    x = (_width * 0.5) - (bounds.width * 0.5);
+    y += DIMENSIONS.tileDimension * 3;
+    ctx.fillText(subtitle, x, y);
 
     ctx.restore();
 }
