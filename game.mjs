@@ -39,9 +39,11 @@ let level = null;
 let background = null;
 let player = null;
 let components = [];
-let exitDoor = null;
 
+let exitDoor = null;
 let isGameOver = false;
+
+let activeEffects = [];
 
 let gameState = GAME_STATES.init;
 let hasGameStarted = false;
@@ -191,9 +193,40 @@ async function updatePlayState() {
                 }
             }
             else if (component.symbole == Component.ids.potion) {
-                console.log(component);
-                player[component.attribute] += component.effect;
-                addComment("You drank " + component.name + " effect is " + component.effect);
+                
+                if (component.attribute === "health") {
+
+                    const isHealing = component.effect > 0;
+                    const duration = 3;
+                    const amountPerTurn = isHealing ? 1 : -1;
+
+                    activeEffects.push({
+                        type: isHealing ? "heal" : "poison",
+                        attribute: "health",
+                        amountPerTurn: amountPerTurn,
+                        remainingTurns: duration
+                    });
+
+                    if (isHealing) {
+                        addComment("")
+                    } else {
+                        addComment("")
+                    }
+                } else if (component.attribute === "strength") {
+
+                    const duration = 5;
+
+                    player.strength += component.effect;
+
+                    activeEffects.push({
+                        type: "buff",
+                        attribute: "strength",
+                        amount: component.effect,
+                        remainingTurns: duration
+                    });
+
+                    addComment("")
+                }
             }
             else if (component.symbole == "F"){
                 const before = player.health;
