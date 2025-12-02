@@ -228,6 +228,23 @@ async function updatePlayState() {
                     addComment("You drink " + component.name + ". Your strength surges for a while!")
                 }
             }
+            else if (component.symbole == Component.ids.trap) {
+
+                const DAMAGE = 2;
+
+                player.health = Tools.clamp(
+                    player.health - DAMAGE,
+                    Player.MIN_HEALTH,
+                    Player.MAX_HEALTH
+                );
+
+                addComment("You step on a trap! -" + DAMAGE + " health");
+
+                if (player.health <= Player.MIN_HEALTH) {
+                    addComment("The trap was fatal...");
+                    isGameOver = true;
+                }
+            }
             else if (component.symbole == "F"){
                 const before = player.health;
                 const HEAL_AMOUNT = 3;
