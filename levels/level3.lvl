@@ -26,10 +26,12 @@
 
 
 H,22,30
-D,2,2
+D,10,10
+D,12,20
+D,2,2         
 K,5,28
+K,2,2
 Z,10,10
-Z,12,20
 Z,15,25
 P,8,8,0,Major Health Potion,health,4
 P,18,20,1,Elixir of strength,strength,8

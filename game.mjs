@@ -39,6 +39,7 @@ let level = null;
 let background = null;
 let player = null;
 let components = [];
+let exitDoor = null;
 
 let isGameOver = false;
 
@@ -67,6 +68,9 @@ async function init(levelIndex = 0) {
     components = []
     player = null;
     isGameOver = false;
+    exitDoor = null;
+
+    let doors = [];
 
     // The following loop creates all the game components.
     // It is messy and could be simpler 
@@ -88,8 +92,18 @@ async function init(levelIndex = 0) {
                     break;
             }
 
+            if (comp.symbole === Component.ids.door) {
+            doors.push(comp);
+            }
+
             components.push(comp);
+
         }
+
+    }
+
+    if (doors.length > 0) {
+        exitDoor = doors[doors.length - 1]
     }
 
     if (!hasGameStarted) {
@@ -105,7 +119,7 @@ function loop() {
     requestAnimationFrame(loop);
 }
 
-function updatePlayState() {
+async function updatePlayState() {
 
     if (isGameOver) {
         return;
@@ -145,8 +159,27 @@ function updatePlayState() {
                 addComment("Found a shiny new key");
             }
             else if (component.symbole == "D" && Player.hasItemInInventory("Key")) {
-                Player.removeFromInventory("Key")
+                
+                Player.removeFromInventory("Key");
+                addComment("You unlock the door.");
+
+                if (exitDoor &&
+                    component.row === exitDoor.row &&
+                    component.col === exitDoor.col) {
+
+                        addComment("You found the exit!")
+
+                        if (currentLevelIndex + 1 < LEVEL_FILES.length) {
+                            addComment("You step into the next level...");
+                            await init(currentLevelIndex + 1);
+                            return;
+                        } else {
+                            addComment("You escaped the dungeon. You win!");
+                            isGameOver = true;
+                        }
+                    }
             }
+
             else if (component.symbole == Component.ids.zombie) {
                 tr = player.row;
                 tc = player.col;
@@ -474,4 +507,4 @@ function renderStructure(structure) {
 
 
 // Start game.
-await init();
+await init(0);
