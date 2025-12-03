@@ -14,7 +14,8 @@ const COMPONENTS = {
     potion: "P",
     door: "D",
     trap: "R",
-    weapon: "W"
+    weapon: "W",
+    teleport: "T"
 }
 
 function createComponent(data) {
