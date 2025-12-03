@@ -627,8 +627,41 @@ function drawHUD(ctx) {
     healthDisplay = healthDisplay.padEnd(Player.MAX_HEALTH * 2, "💀");
     ctx.fillText(healthDisplay, DIMENSIONS.padding, DIMENSIONS.padding * 0.75);
 
+    let inventoryText = getInventoryDisplayText();
+    ctx.fillText(inventoryText, DIMENSIONS.padding, DIMENSIONS.padding * 2);
 }
 //#endregion
+
+function getInventoryDisplayText() {
+    if (!player || !player.inventory) {
+        return "Inventory: (empty)";
+    }
+
+    let parts = [];
+
+    for (let name in player.inventory) {
+
+        if (!player.inventory.hasOwnProperty(name)) {
+            continue;
+        }
+
+        let count = player.inventory[name];
+
+        if (count > 0) {
+            let label = name;
+            if (count > 1) {
+                label = name + " x" + count;
+            }
+            parts.push(label)
+        }
+    }
+
+    if (parts.length === 0) {
+        return "Inventory: (empty)"
+    }
+
+    return "Inventory: " + parts.join(", ");
+}
 
 //#region utility functions
 
