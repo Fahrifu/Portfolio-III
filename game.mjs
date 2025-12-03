@@ -660,6 +660,7 @@ function drawInstructionScreen() {
         "Walk into Zombies to fight",
         "Pick up keys (K) nad Potion (P)",
         "Open doors (D) when you have a key",
+        "Open all doors to continue to next level!",
         "",
         "Press ENTER to return to the menu"
     ];

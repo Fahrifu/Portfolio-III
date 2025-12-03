@@ -116,8 +116,8 @@ const TILES = {
     "T": {
         symbole: "T",
         draw: (ctx, x, y, dim) => {
-            let col = 4;
-            let row = 0;
+            let col = 3;
+            let row = 8;
             let sx = (col * SPRITES.items.dim) + SPRITES.items.offsetX;
             let sy = (row * SPRITES.items.dim) + SPRITES.items.offsetY;
             ctx.drawImage(SPRITES.items.image, sx, sy, SPRITES.items.dim, SPRITES.items.dim, x, y, dim, dim);
