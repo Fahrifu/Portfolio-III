@@ -10,6 +10,7 @@ import Component from "./components/component.mjs";
 import Player from "./components/player.mjs";
 import Weapon from "./components/weapon.mjs";
 import Potion from "./components/potion.mjs";
+import Teleport from "./components/teleport.mjs";
 import Tools from "./util.mjs";
 
 const _td = DIMENSIONS.tileDimension;
@@ -93,6 +94,9 @@ async function init(levelIndex = 0) {
                 
                 case Component.ids.weapon: comp = Weapon.createWeapon(level.components[i]);
                     break;
+                
+                case Component.ids.teleport: comp = Teleport.createTeleport(level.components[i]);
+                    break;
 
                 default: comp = Component.createComponent(level.components[i]);
                     break;
@@ -156,6 +160,7 @@ async function updatePlayState() {
     }
 
     // Interactions between player and components
+    let hasTeleportedThisTurn = false;
     let keep = [];
     for (let component of components) {
 
@@ -299,6 +304,33 @@ async function updatePlayState() {
                 Player.addToInventory(component.name);
 
                 addComment("You equip " + component);
+            }
+            else if (component.symbole == Component.ids.teleport && !hasTeleportedThisTurn) {
+
+                let targetRow = tr;
+                let targetCol = tc;
+
+                for (let other of components) {
+                    if (other.symbole == components.ids.teleport &&
+                        other.pairId === component.pairId &&
+                        (other.row !== component.row || other.col !== component.col)) {
+
+                        targetRow = other.row;
+                        targetCol = other.col;
+                        break;
+                    }
+                }
+
+                if (targetRow !== tr || targetCol !== tc) {
+                    addComment("You step onto a strange area... teleport!");
+                    tr = targetRow;
+                    tc = targetCol;
+                    hasTeleportedThisTurn = true;
+                } else {
+                    addComment("This teleport seems inactive")
+                }
+
+                keep.push(component);
             }
             else {
                 keep.push(component)
